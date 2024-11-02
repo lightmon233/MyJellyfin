@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -39,6 +39,8 @@ function App() {
 
   useEffect(() => {
     fetch('/api/hello')
+      // fetch返回一个Promise，该Promise会解析为一个Response对象
+      // response解析为纯文本
       .then((response) => response.text())
       .then((data) => setMessage(data))
       .catch((error) => console.error('Error fetching message:', error));
@@ -47,7 +49,7 @@ function App() {
   return (
     <div>
       <h1>React + Vite + NestJS</h1>
-      <p>Message from backend: {message}</p>
+      <p>Message from backend: { message }</p>
     </div>
   );
 }
