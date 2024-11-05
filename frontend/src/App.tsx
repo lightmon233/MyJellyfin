@@ -1,59 +1,53 @@
-import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import { Film, Search, Upload, Settings2 } from 'lucide-react';
+import MovieGrid from './components/MovieGrid';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
+import { Movie } from './types';
 
-// function App() {
-//   const [count, setCount] = useState(0)
-//
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.tsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
+const App = () => {
+  const [movies, setMovies] = useState<Movie[]>([
+    {
+      id: '1',
+      title: 'Inception',
+      year: 2010,
+      poster: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?auto=format&fit=crop&q=80&w=500',
+      overview: 'A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.',
+      rating: 8.8
+    },
+    {
+      id: '2',
+      title: 'The Dark Knight',
+      year: 2008,
+      poster: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&q=80&w=500',
+      overview: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.',
+      rating: 9.0
+    }
+  ]);
 
-// 测试对nest后端的访问
+  const [searchQuery, setSearchQuery] = useState('');
 
-function App() {
-  const [message, setMessage] = useState<string>('');
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    // In a real app, this would trigger an API call to search movies
+  };
 
-  useEffect(() => {
-    fetch('/api/hello')
-      // fetch返回一个Promise，该Promise会解析为一个Response对象
-      // response解析为纯文本
-      .then((response) => response.text())
-      .then((data) => setMessage(data))
-      .catch((error) => console.error('Error fetching message:', error));
-  }, []);
+  const handleScrape = () => {
+    // In a real app, this would trigger the movie scraping process
+    alert('Scraping functionality would be implemented here');
+  };
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">
-        React + Vite + NestJS
-      </h1>
-      <p>Message from backend: { message }</p>
+    <div className="flex h-screen bg-gray-900 text-white">
+      <Sidebar />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Header onSearch={handleSearch} onScrape={handleScrape} />
+        <main className="flex-1 overflow-y-auto p-6">
+          <MovieGrid movies={movies} />
+        </main>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
