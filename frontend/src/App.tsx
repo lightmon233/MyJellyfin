@@ -48,7 +48,9 @@ function App() {
 
   return (
     <div>
-      <h1>React + Vite + NestJS</h1>
+      <h1 className="text-3xl font-bold underline">
+        React + Vite + NestJS
+      </h1>
       <p>Message from backend: { message }</p>
     </div>
   );
