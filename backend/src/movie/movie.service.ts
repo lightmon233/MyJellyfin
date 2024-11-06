@@ -7,7 +7,7 @@ import axios from 'axios';
 @Injectable()
 export class MovieService {
   private readonly tmdbBaseUrl = 'https://api.themoviedb.org/3';
-  private readonly apiKey = 'YOUR_TMDB_API_KEY';
+  private readonly apiKey = 'REMOVED';
 
   constructor(
     @InjectRepository(Movie)
@@ -31,10 +31,10 @@ export class MovieService {
         const newMovie = this.movieRepository.create({
           id: movieData.id,
           title: movieData.title,
-          year: movieData.year,
-          poster: movieData.poster,
+          release_date: movieData.release_date,
+          poster_path: movieData.poster_path,
           overview: movieData.overview,
-          rating: movieData.rating
+          vote_average: movieData.vote_average
         });
         await this.movieRepository.save(newMovie);
         console.log(`Saved movie: ${movieData.title}`);
