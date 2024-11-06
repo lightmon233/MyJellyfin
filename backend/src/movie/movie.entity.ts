@@ -3,20 +3,20 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Movie {
     @PrimaryGeneratedColumn()
-    id: string;
+    id: number;
 
     @Column()
     title: string;
 
     @Column()
-    year: number;
+    release_date: string;
 
     @Column()
-    poster: string;
+    poster_path: string;
 
     @Column()
     overview: string;
 
     @Column()
-    rating: number;
+    vote_average: number;
 }
