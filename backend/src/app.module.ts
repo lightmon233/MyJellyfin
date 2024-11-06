@@ -6,8 +6,8 @@ import { MovieModule } from './movie/movie.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '206.237.19.214',
-      port: 2289,
+      host: 'REMOVED',
+      port: 5432,
       username: 'postgres',
       password: 'postgres',
       database: 'movie_db',
