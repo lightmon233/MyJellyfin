@@ -8,20 +8,20 @@ import { Movie } from './types';
 const App = () => {
   const [movies, setMovies] = useState<Movie[]>([
     {
-      id: '1',
+      id: 1,
       title: 'Inception',
-      year: 2010,
-      poster: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?auto=format&fit=crop&q=80&w=500',
+      release_date: '2010',
+      poster_path: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?auto=format&fit=crop&q=80&w=500',
       overview: 'A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.',
-      rating: 8.8
+      vote_average: 8.8
     },
     {
-      id: '2',
+      id: 2,
       title: 'The Dark Knight',
-      year: 2008,
-      poster: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&q=80&w=500',
+      release_date: '2008',
+      poster_path: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&q=80&w=500',
       overview: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.',
-      rating: 9.0
+      vote_average: 9.0
     }
   ]);
 
