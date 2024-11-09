@@ -41,7 +41,7 @@ export class MovieService {
           const posterUrl = `https://image.tmdb.org/t/p/original${poster_path}`;
           const imageResponse = await axios.get(posterUrl, { responseType: 'arraybuffer' });
 
-          const tempImagePath = path.join('/.tmp', imageName);
+          const tempImagePath = path.join(__dirname, '../../.tmp', imageName);
 
           await writeFile(tempImagePath, imageResponse.data);
           console.log(`Downloaded poster for movie: ${title} to temporary path ${tempImagePath}`);

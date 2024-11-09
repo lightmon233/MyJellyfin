@@ -12,11 +12,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USERNAME'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_NAME'),
+        host: "43.143.98.164",
+        port: 7088,
+        username: "movie",
+        password: "MOVIE@123456",
+        database: "movie_db",
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true, // 仅开发使用
       }),
