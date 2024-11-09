@@ -6,12 +6,14 @@ import axios from 'axios';
 import * as path from 'path';
 import { writeFile, readFile, unlink } from 'fs/promises';
 import FormData = require('form-data');
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MovieService {
+  private readonly configService = new ConfigService();
   private readonly tmdbBaseUrl = 'https://api.themoviedb.org/3';
-  private readonly apiKey = 'REMOVED';
-  private readonly nginxServer = 'REMOVED';
+  private readonly apiKey = this.configService.get<string>('TMDB_API_KEY');
+  private readonly nginxServer = this.configService.get<string>('NGINX_HOST');
 
   constructor(
     @InjectRepository(Movie)
