@@ -5,7 +5,7 @@ import { Movie } from './movie.entity';
 import axios from 'axios';
 import * as path from 'path';
 import { writeFile, readFile, unlink } from 'fs/promises';
-import FormData from 'form-data';
+import FormData = require('form-data');
 
 @Injectable()
 export class MovieService {
@@ -33,6 +33,7 @@ export class MovieService {
       const movieData = response.data.results[0];
       if (movieData) {
         const { id, title, release_date, poster_path, overview, vote_average } = movieData;
+        console.log(`Id for the movie ${title} is ${id}.`);
 
         // 下载海报图片到本地并上传到nginx文件服务器
         if (poster_path) {
@@ -57,7 +58,7 @@ export class MovieService {
           if (uploadResponse.status === 200) {
             console.log(`Uploaded poster for movie: ${title} to Nginx server`);
 
-            const nginxImagePath = `http://${this.nginxServer}/download/movid_db/img_poster/${imageName}`;
+            const nginxImagePath = `http://${this.nginxServer}/download/movie_db/img_poster/${imageName}`;
 
             const newMovie = this.movieRepository.create({
               id,
