@@ -12,3 +12,7 @@ npm-debug.log
 Thumbs.db
 
 *.json
+
+# environment file
+
+.env
