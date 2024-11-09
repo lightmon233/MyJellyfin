@@ -3,11 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Movie } from './movie.entity';
 import axios from 'axios';
+import * as path from 'path';
+import { writeFile, readFile, unlink } from 'fs/promises';
+import FormData from 'form-data';
 
 @Injectable()
 export class MovieService {
   private readonly tmdbBaseUrl = 'https://api.themoviedb.org/3';
   private readonly apiKey = 'REMOVED';
+  private readonly nginxServer = 'REMOVED';
 
   constructor(
     @InjectRepository(Movie)
@@ -28,16 +32,53 @@ export class MovieService {
 
       const movieData = response.data.results[0];
       if (movieData) {
-        const newMovie = this.movieRepository.create({
-          id: movieData.id,
-          title: movieData.title,
-          release_date: movieData.release_date,
-          poster_path: movieData.poster_path,
-          overview: movieData.overview,
-          vote_average: movieData.vote_average
-        });
-        await this.movieRepository.save(newMovie);
-        console.log(`Saved movie: ${movieData.title}`);
+        const { id, title, release_date, poster_path, overview, vote_average } = movieData;
+
+        // 下载海报图片到本地并上传到nginx文件服务器
+        if (poster_path) {
+          const imageName = poster_path.substring(1);
+
+          const posterUrl = `https://image.tmdb.org/t/p/original${poster_path}`;
+          const imageResponse = await axios.get(posterUrl, { responseType: 'arraybuffer' });
+
+          const tempImagePath = path.join('/.tmp', imageName);
+
+          await writeFile(tempImagePath, imageResponse.data);
+          console.log(`Downloaded poster for movie: ${title} to temporary path ${tempImagePath}`);
+
+          const nginxUploadUrl = `http://${this.nginxServer}/upload/?folder=movie_db/img_poster`;
+          const formData = new FormData();
+          formData.append('file', await readFile(tempImagePath), imageName);
+
+          const uploadResponse = await axios.post(nginxUploadUrl, formData, {
+            headers: formData.getHeaders(),
+          });
+
+          if (uploadResponse.status === 200) {
+            console.log(`Uploaded poster for movie: ${title} to Nginx server`);
+
+            const nginxImagePath = `http://${this.nginxServer}/download/movid_db/img_poster/${imageName}`;
+
+            const newMovie = this.movieRepository.create({
+              id,
+              title,
+              release_date,
+              poster_path: nginxImagePath,
+              overview,
+              vote_average,
+            });
+
+            await this.movieRepository.save(newMovie);
+            console.log(`Saved movie: ${title}`);
+          } else {
+            console.error(`Failed to upload image to Nginx for movie: ${title}`);
+          }
+
+          // 删掉.tmp的图片
+          await unlink(tempImagePath);
+        } else {
+          console.log(`No poster found for movie: ${title}`);
+        }
       } else {
         console.log(`No data found for movie: ${localMovieName}`);
       }
