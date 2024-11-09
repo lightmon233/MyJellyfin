@@ -6,8 +6,10 @@ export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Get('scrape')
-  async scrapeMovie(@Query('name') name: string): Promise<string> {
-    await this.movieService.scrapeMovieData(name);
-    return `Movie data for "${name}" has been scraped and stored.`;
+  async scrapeMovie(@Query('names') names: string[]): Promise<string> {
+    for (const name of names) {
+      await this.movieService.scrapeMovieData(name);
+    }
+    return `Movie data for [${names.join(', ')}] has been scraped and stored.`;
   }
 }
