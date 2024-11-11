@@ -36,32 +36,32 @@ const App = () => {
   const [subFolderNames, setSubFolderNames] = useState<string[]>([]);
   const folderPickerRef = useRef<HTMLInputElement>(null);
 
-  const handleScrape = async () => {    try {
-    if (folderPickerRef.current) {
-      folderPickerRef.current.click();
-      folderPickerRef.current.addEventListener('change', async (event) => {
-        const target = event.target as HTMLInputElement;
-        if (target && target.files && target.files.length > 0) {
-          const selectedFolder = target.files[0];
-          const subfolders = await getSubFolders(selectedFolder);
-          setSubFolderNames(subfolders);
-          // 将子文件夹名字数组传递给后端
-          await axios.post('localhost:3000/movies/scrape', { subfolders });
-        } else {
-          console.error('No folder selected.');
-        }
-      });
-    } else {
-      console.error('Folder picker element not found.');
+  const handleScrape = async () => {    
+    try {
+      if (folderPickerRef.current) {
+        folderPickerRef.current.click();
+        folderPickerRef.current.addEventListener('change', async (event) => {
+          const target = event.target as HTMLInputElement;
+          if (target && target.files && target.files.length > 0) {
+            const selectedFolder = target.files[0];
+            const subfolders = await getSubFolders(selectedFolder);
+            setSubFolderNames(subfolders);
+            // 将子文件夹名字数组传递给后端
+            await axios.post('localhost:3000/movies/scrape', { subfolders });
+          } else {
+            console.error('No folder selected.');
+          }
+        });
+      } else {
+        console.error('Folder picker element not found.');
+      }
+    } catch (error) {
+      console.error('Error handling scrape:', error);
     }
-  } catch (error) {
-    console.error('Error handling scrape:', error);
-  }
-};
+  };
 
   const getSubFolders = async (folder: File) => {
     const subfolders: string[] = [];
-
     return subfolders;
   };
 
@@ -76,23 +76,14 @@ const App = () => {
   };
 
   return (
-    <div>
-      <button id="scrapeButton" onClick={handleScrape}>Scrape Movies</button>
-      <input
-        type="file"
-        ref={folderPickerRef}
-        style={{ display: 'none' }}
-      />
-      {subFolderNames.length > 0 && (
-        <div>
-          <h2>Subfolders:</h2>
-          <ul>
-            {subFolderNames.map((name, index) => (
-              <li key={index}>{name}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+    <div className="flex h-screen bg-gray-900 text-white">
+      <Sidebar />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Header onSearch={handleSearch} onScrape={handleScrape} />
+        <main className="flex-1 overflow-y-auto p-6">
+          <MovieGrid movies={movies} />
+        </main>
+      </div>
     </div>
   );
 };
