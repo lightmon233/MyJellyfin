@@ -27,7 +27,7 @@ const Header = ({ onSearch, onScrape }: HeaderProps) => {
     // 获取每个文件的相对路径并提取第一层子文件夹名称
     Array.from(files).forEach((file) => {
       const path = file.webkitRelativePath;
-      const folderName = path.split('/')[0]; // 获取文件夹名称
+      const folderName = path.split('/')[1]; // 获取文件夹名称
       folderSet.add(folderName); // 将文件夹名称添加到集合中
     });
 
