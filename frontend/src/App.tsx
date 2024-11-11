@@ -37,6 +37,20 @@ const App = () => {
     alert('Scraping functionality would be implemented here');
   };
 
+  const fetchMovies = async () => {
+    try {
+        const response = await axios.get('/api/movies/getinfo');
+        setMovies(response.data);
+    } catch (error) {
+        console.error('Error fetching movies:', error);
+    }
+  };
+
+  useEffect(() => {
+      fetchMovies();
+  }, []);
+
+
   return (
     <div className="flex h-screen bg-gray-900 text-white">
       <Sidebar />
