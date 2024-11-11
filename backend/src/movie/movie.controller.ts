@@ -10,7 +10,7 @@ export class MovieController {
   async scrapeMovie(@Query('names') names: string): Promise<string> {
     const nameArray = names.split(',,');
     for (const name of nameArray) {
-      this.movieService.scrapeMovieData(name);
+      await this.movieService.scrapeMovieData(name);
     }
     return `Movie data for [${nameArray.join(', ')}] has been scraped and stored.`;
   }
