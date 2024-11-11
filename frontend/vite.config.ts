@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       // 配置'/api'路由到nest后端
       '/api': {
-        target: process.env.VITE_API_BASE_URL, // nestjs的后端地址
+        target: 'http://localhost:3000', // nestjs的后端地址
         // changeOrigin会把访问从5173端口转到3000端口
         changeOrigin: true,
         // 如过写以下这句，前端访问'/api/hello', 就会被替换成访问后端的'/hello'

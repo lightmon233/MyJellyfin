@@ -35,7 +35,8 @@ const App = () => {
 
   const handleScrape = async (folders: string[]) => {    
     try {
-      await axios.post('/api/movies/scrape', { folders });
+      const folderString = folders.join(',');
+      await axios.post('/api/movies/scrape', { folderString });
       console.log("folder's names sent to backend:", folders);
     } catch (error) {
       console.error("error when sending folders' names:", error);
