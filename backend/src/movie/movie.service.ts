@@ -22,7 +22,6 @@ export class MovieService {
 
   async scrapeMovieData(localMovieName: string): Promise<void> {
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
       const response = await axios.get(
         `${this.tmdbBaseUrl}/search/movie`,
         {
@@ -43,7 +42,6 @@ export class MovieService {
           const imageName = poster_path.substring(1);
 
           const posterUrl = `https://image.tmdb.org/t/p/original${poster_path}`;
-          await new Promise(resolve => setTimeout(resolve, 1000));
           const imageResponse = await axios.get(posterUrl, { responseType: 'arraybuffer' });
 
           const tempImagePath = path.join(__dirname, '../../.tmp', imageName);
@@ -55,7 +53,6 @@ export class MovieService {
           const formData = new FormData();
           formData.append('file', await readFile(tempImagePath), imageName);
 
-          await new Promise(resolve => setTimeout(resolve, 1000));
           const uploadResponse = await axios.post(nginxUploadUrl, formData, {
             headers: formData.getHeaders(),
           });
