@@ -36,6 +36,7 @@ const App = () => {
   const handleScrape = () => {
     // In a real app, this would trigger the movie scraping process
     alert('Scraping functionality would be implemented here');
+    fetchMovies();
   };
 
   const fetchMovies = async () => {
