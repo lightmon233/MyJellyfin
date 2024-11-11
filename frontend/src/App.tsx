@@ -45,10 +45,10 @@ const App = () => {
       });
       console.log("reponse:", response);
       console.log("folder's names sent to backend:", folders);
+      fetchMovies();
     } catch (error) {
       console.error("error when sending folders' names:", error);
     }
-    fetchMovies();
   };
 
   const fetchMovies = async () => {
