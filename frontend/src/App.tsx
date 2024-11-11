@@ -35,19 +35,20 @@ const App = () => {
 
   const handleScrape = async (folders: string[]) => {    
     try {
-      const folderString = folders.join(',');
+      const folderString = folders.join(',,');
       console.log(folderString);
       const response = await axios.get('/api/movies/scrape', {
         params: {
           names: folderString
-        }
+        },
+        timeout: 60000
       });
       console.log("reponse:", response);
       console.log("folder's names sent to backend:", folders);
     } catch (error) {
       console.error("error when sending folders' names:", error);
     }
-    await fetchMovies();
+    fetchMovies();
   };
 
   const fetchMovies = async () => {
