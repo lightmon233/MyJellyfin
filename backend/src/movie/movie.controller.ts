@@ -1,5 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { MovieService } from './movie.service';
+import { Movie } from './movie.entity';
 
 @Controller('movies')
 export class MovieController {
@@ -13,5 +14,9 @@ export class MovieController {
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
     return `Movie data for [${nameArray.join(', ')}] has been scraped and stored.`;
+  }
+  @Get('getinfo')
+  async getMoviesInfo(): Promise<Movie[]> {
+    return this.movieService.getAllMovies();
   }
 }
