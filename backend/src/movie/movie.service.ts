@@ -92,4 +92,14 @@ export class MovieService {
       console.error('Error fetching data from TMDB:', error);
     }
   }
+  async getAllMovies(): Promise<Movie[]> {
+    try {
+      const movies = await this.movieRepository.find();
+      return movies;
+    } catch (error) {
+      console.error('Error fetching movies from the database:', error);
+      throw new Error('Failed to fetch movies');
+    }
+  }
+  
 }
