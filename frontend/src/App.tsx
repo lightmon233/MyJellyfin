@@ -4,6 +4,7 @@ import MovieGrid from './components/MovieGrid';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import { Movie } from './types';
+import axios from 'axios';
 
 const App = () => {
   const [movies, setMovies] = useState<Movie[]>([
@@ -45,11 +46,6 @@ const App = () => {
         console.error('Error fetching movies:', error);
     }
   };
-
-  useEffect(() => {
-      fetchMovies();
-  }, []);
-
 
   return (
     <div className="flex h-screen bg-gray-900 text-white">
