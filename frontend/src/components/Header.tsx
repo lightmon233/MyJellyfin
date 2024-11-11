@@ -1,12 +1,38 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Search, Upload } from 'lucide-react';
 
 interface HeaderProps {
   onSearch: (query: string) => void;
-  onScrape: () => void;
+  onScrape: (folders: string[]) => void;
 }
 
 const Header = ({ onSearch, onScrape }: HeaderProps) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // 点击按钮时触发文件选择框
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click(); // 触发文件选择
+    }
+  }
+
+  // 处理文件夹选择
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files) return;
+
+    const folderSet = new Set<string>();
+
+    // 获取每个文件的相对路径并提取第一层子文件夹名称
+    Array.from(files).forEach((file) => {
+      const path = file.webkitRelativePath;
+      const folderName = path.split('/')[0]; // 获取文件夹名称
+      folderSet.add(folderName); // 将文件夹名称添加到集合中
+    });
+
+    onScrape(Array.from(folderSet));
+  };
   return (
     <header className="bg-gray-800 border-b border-gray-700 p-4">
       <div className="flex items-center justify-between">
@@ -22,12 +48,14 @@ const Header = ({ onSearch, onScrape }: HeaderProps) => {
           </div>
         </div>
         <button
-          onClick={onScrape}
-          className="ml-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center transition-colors"
+          onClick={handleButtonClick}
+          className="ml-4 px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 text-white"
         >
-          <Upload size={20} className="mr-2" />
-          Scrape Movies
+          Scrape Directory
         </button>
+        {/*因为react的bug，用ts写webkitdirectory要加上下面这个指令*/}
+        {/* @ts-expect-error */}
+        <input type="file" ref={fileInputRef} style={{ display: 'none' }} webkitdirectory="" onChange={handleFileChange}/>
       </div>
     </header>
   );

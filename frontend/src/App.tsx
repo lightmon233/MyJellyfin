@@ -33,45 +33,22 @@ const App = () => {
     // In a real app, this would trigger an API call to search movies
   };
 
-  const [subFolderNames, setSubFolderNames] = useState<string[]>([]);
-  const folderPickerRef = useRef<HTMLInputElement>(null);
-
-  const handleScrape = async () => {    
+  const handleScrape = async (folders: string[]) => {    
     try {
-      if (folderPickerRef.current) {
-        folderPickerRef.current.click();
-        folderPickerRef.current.addEventListener('change', async (event) => {
-          const target = event.target as HTMLInputElement;
-          if (target && target.files && target.files.length > 0) {
-            const selectedFolder = target.files[0];
-            const subfolders = await getSubFolders(selectedFolder);
-            setSubFolderNames(subfolders);
-            // 将子文件夹名字数组传递给后端
-            await axios.post('localhost:3000/movies/scrape', { subfolders });
-          } else {
-            console.error('No folder selected.');
-          }
-        });
-      } else {
-        console.error('Folder picker element not found.');
-      }
+      await axios.post('/api/movies/scrape', { folders });
+      console.log("folder's names sent to backend:", folders);
     } catch (error) {
-      console.error('Error handling scrape:', error);
+      console.error("error when sending folders' names:", error);
     }
+    await fetchMovies();
   };
-
-  const getSubFolders = async (folder: File) => {
-    const subfolders: string[] = [];
-    return subfolders;
-  };
-
 
   const fetchMovies = async () => {
     try {
-        const response = await axios.get('/api/movies/getinfo');
-        setMovies(response.data);
+      const response = await axios.get('/api/movies/getinfo');
+      setMovies(response.data);
     } catch (error) {
-        console.error('Error fetching movies:', error);
+      console.error('Error fetching movies:', error);
     }
   };
 
@@ -79,7 +56,7 @@ const App = () => {
     <div className="flex h-screen bg-gray-900 text-white">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header onSearch={handleSearch} onScrape={handleScrape} />
+        <Header onSearch={handleSearch} onScrape={handleScrape}/>
         <main className="flex-1 overflow-y-auto p-6">
           <MovieGrid movies={movies} />
         </main>
