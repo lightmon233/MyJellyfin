@@ -31,14 +31,27 @@ const App = () => {
   const [filteredMovies, setFilteredMovies] = useState<Movie[]>(movies);
 
   const handleFilter = (query: string) => {
-    setFilteredMovies(movies);
-    if (query.trim() != '') {
-      const filtered = filteredMovies.filter(movie =>
+    // setFilteredMovies(movies);
+    // if (query.trim() != '') {
+    //   const filtered = filteredMovies.filter(movie =>
+    //     movie.title.toLowerCase().includes(query.toLowerCase())
+    //   );
+    //   setFilteredMovies(filtered);
+    // }
+    // 以上代码有bug是因为 filteredMovies 的状态更新是异步的。
+    // 在调用 setFilteredMovies 后，状态不会立即更新，
+    // 而是会等到下一个渲染周期才生效。因此，console.log(filteredMovies) 
+    // 打印出来的值还是之前的状态，而不是刚刚更新后的值。
+    if (query.trim() === '') {
+      setFilteredMovies(movies);
+    } else {
+      const filtered = movies.filter(movie =>
         movie.title.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredMovies(filtered);
     }
     console.log(movies);
+    console.log(filteredMovies);
   }
 
   const handleSearch = (query: string) => {
@@ -68,7 +81,6 @@ const App = () => {
     try {
       const response = await axios.get('/api/movies/getinfo');
       setMovies(response.data);
-      // 因为setMovies和setFilteredMovies是并发的，所以如果写setFilteredMovies(movies)可能会用过时的movies数据
       setFilteredMovies(response.data);
     } catch (error) {
       console.error('Error fetching movies:', error);
