@@ -11,6 +11,7 @@ export class MovieController {
     const nameArray = names.split(',,');
     for (const name of nameArray) {
       await this.movieService.scrapeMovieData(name);
+      await new Promise(resolve => setTimeout(resolve, 100));
     }
     return `Movie data for [${nameArray.join(', ')}] has been scraped and stored.`;
   }

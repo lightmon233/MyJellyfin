@@ -28,16 +28,15 @@ const App = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
 
+  const [filteredMovies, setFilteredMovies] = useState<Movie[]>(movies);
+
   const handleFilter = (query: string) => {
-    query = query.trim()
-    if (query === '') {
-      setMovies(movies); // 如果查询为空，重置为完整列表
-    } else {
-      const [moviesCopy] = useState<Movie[]>(movies);
-      const filtered = moviesCopy.filter(movie =>
+    setFilteredMovies(movies);
+    if (query.trim() != '') {
+      const filtered = filteredMovies.filter(movie =>
         movie.title.toLowerCase().includes(query.toLowerCase())
       );
-      setMovies(filtered);
+      setFilteredMovies(filtered);
     }
     console.log(movies);
   }
@@ -69,6 +68,8 @@ const App = () => {
     try {
       const response = await axios.get('/api/movies/getinfo');
       setMovies(response.data);
+      // 因为setMovies和setFilteredMovies是并发的，所以如果写setFilteredMovies(movies)可能会用过时的movies数据
+      setFilteredMovies(response.data);
     } catch (error) {
       console.error('Error fetching movies:', error);
     }
@@ -80,7 +81,7 @@ const App = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header onSearch={handleSearch} onScrape={handleScrape} onFilter={handleFilter}/>
         <main className="flex-1 overflow-y-auto p-6">
-          <MovieGrid movies={movies} />
+          <MovieGrid movies={filteredMovies} />
         </main>
       </div>
     </div>
