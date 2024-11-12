@@ -6,12 +6,6 @@ import { Movie } from './movie.entity';
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
-  @Get('scrape_single')
-  async scrapeMovieSingle(@Query('name') name: string): Promise<string> {
-    this.movieService.scrapeMovieData(name);
-    return `Movie data for ${name} has been scraped.`;
-  }
-
   @Get('scrape')
   async scrapeMovie(@Query('names') names: string): Promise<string> {
     const nameArray = names.split(',,');
