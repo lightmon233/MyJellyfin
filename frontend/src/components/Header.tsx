@@ -4,9 +4,10 @@ import { Search, Upload } from 'lucide-react';
 interface HeaderProps {
   onSearch: (query: string) => void;
   onScrape: (folders: string[]) => void;
+  onFilter: (query: string) => void;
 }
 
-const Header = ({ onSearch, onScrape }: HeaderProps) => {
+const Header = ({ onSearch, onScrape, onFilter }: HeaderProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 点击按钮时触发文件选择框
@@ -46,6 +47,17 @@ const Header = ({ onSearch, onScrape }: HeaderProps) => {
               onChange={(e) => onSearch(e.target.value)}
             />
           </div>
+        </div>
+        <div className="flex-1 max-w-2xl">
+            <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <input
+                  type="text"
+                  placeholder="Filter movies..."
+                  className="w-full pl-10 pr-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
+                  onChange={(e) => onFilter(e.target.value)}
+                />
+            </div>
         </div>
         <button
           onClick={handleButtonClick}
