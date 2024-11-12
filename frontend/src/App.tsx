@@ -78,9 +78,19 @@ const App = () => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete('/api/movies/deleteAll');
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error deleting movie data:', error);
+    }
+    fetchMovies();
+  }
+
   return (
     <div className="flex h-screen bg-gray-900 text-white">
-      <Sidebar onRefresh={fetchMovies}/>
+      <Sidebar onRefresh={fetchMovies} onDelete={handleDelete}/>
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header onSearch={handleSearch} onScrape={handleScrape} onFilter={handleFilter}/>
         <main className="flex-1 overflow-y-auto p-6">

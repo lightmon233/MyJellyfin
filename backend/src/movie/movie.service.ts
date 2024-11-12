@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { Movie } from './movie.entity';
 import axios from 'axios';
 import * as path from 'path';
@@ -18,7 +18,29 @@ export class MovieService {
   constructor(
     @InjectRepository(Movie)
     private readonly movieRepository: Repository<Movie>,
+    private readonly dataSource: DataSource
   ) {}
+
+  async deleteDatabase(): Promise<void> {
+    try {
+      // This will drop the database
+      await this.dataSource.dropDatabase();
+      console.log('Database deleted successsfully');
+    } catch (error) {
+      console.error('Error deleting the database:', error);
+      throw new Error('Failed to delete database');
+    }
+  }
+
+  async deleteAllMovies(): Promise<void> {
+    try {
+      await this.movieRepository.clear();
+      console.log('All movies have been deleted');
+    } catch (error) {
+      console.error('Error deleting movies from the database:', error);
+      throw new Error('Failed to delete movies');
+    }
+  }
 
   async scrapeMovieData(localMovieName: string): Promise<void> {
     try {
@@ -89,6 +111,7 @@ export class MovieService {
       console.error('Error fetching data from TMDB:', error);
     }
   }
+
   async getAllMovies(): Promise<Movie[]> {
     try {
       const movies = await this.movieRepository.find();
