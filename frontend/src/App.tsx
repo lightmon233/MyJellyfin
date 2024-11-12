@@ -33,7 +33,7 @@ const App = () => {
     if (query === '') {
       setMovies(movies); // 如果查询为空，重置为完整列表
     } else {
-      const moviesCopy = structuredClone(movies);
+      const [moviesCopy] = useState<Movie[]>(movies);
       const filtered = moviesCopy.filter(movie =>
         movie.title.toLowerCase().includes(query.toLowerCase())
       );
