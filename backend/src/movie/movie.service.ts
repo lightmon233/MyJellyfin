@@ -42,15 +42,30 @@ export class MovieService {
     }
   }
 
-  async scrapeMovieData(localMovieName: string): Promise<void> {
+  async scrapeMovieData(
+    localMovieName: string,
+    primaryReleaseYear?: string,
+    language?: string
+  ): Promise<void> {
     try {
+      const params: {
+        api_key: string,
+        query: string,
+        primary_release_year?: string,
+        language?: string
+      } = { api_key: this.apiKey, query: localMovieName };
+
+      if (primaryReleaseYear) {
+        params.primary_release_year = primaryReleaseYear;
+      }
+      if (language) {
+        params.language = language;
+      }
+
       const response = await axios.get(
         `${this.tmdbBaseUrl}/search/movie`,
         {
-          params: {
-            api_key: this.apiKey,
-            query: localMovieName,
-          },
+          params
         },
       );
 

@@ -3,7 +3,11 @@ import { Search, Filter } from 'lucide-react';
 
 interface HeaderProps {
   onSearch: (query: string) => void;
-  onScrape: (folders: string[]) => void;
+  onScrape: ({
+    names, primary_release_year, language
+  }: {
+    names: string[]; primary_release_year?: string; language?: string
+  }) => void;
   onFilter: (query: string) => void;
 }
 
@@ -37,7 +41,7 @@ const Header = ({ onSearch, onScrape, onFilter }: HeaderProps) => {
       folderSet.add(folderName); // 将文件夹名称添加到集合中
     });
 
-    onScrape(Array.from(folderSet));
+    onScrape({names: Array.from(folderSet)});
   };
 
   return (

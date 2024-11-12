@@ -43,21 +43,61 @@ const App = () => {
   }
 
   const handleSearch = async (query: string) => {
-    handleScrape([query]);
+    const params: { names: string[]; primary_release_year?: string; language?: string } = {
+      names: [query],
+    };
+
+    // 使用正则表达式解析 `primary_release_year`
+    const yearMatch = query.match(/y:(\d{4})/);
+    if (yearMatch) {
+      params.primary_release_year = yearMatch[1];
+      params.names = [params.names[0].replace(yearMatch[0], '').trim()]; // 从查询中移除 `y:2015`
+    }
+
+    // 使用正则表达式解析 `language`
+    const languageMatch = query.match(/l:([a-z-]+)/i);
+    if (languageMatch) {
+      params.language = languageMatch[1];
+      params.names = [params.names[0].replace(languageMatch[0], '').trim()]; // 从查询中移除 `l:zh-CN`
+    }
+
+    handleScrape(params);
   }
 
-  const handleScrape = async (folders: string[]) => {    
+  const handleScrape = async ({
+    names, primary_release_year, language
+  }: {
+    names: string[];
+    primary_release_year?: string;
+    language?: string;
+  }) => {    
     try {
-      const folderString = folders.join(',,');
+      const folderString = names.join(',,');
       console.log(folderString);
+
+      // const params: {
+      //   names: string,
+      //   primary_release_year?: string,
+      //   language?: string
+      // } = { names: folderString };
+
+      // if (primary_release_year) {
+      //   params.primary_release_year = primary_release_year;
+      // }
+      // if (language) {
+      //   params.language = language;
+      // }
+
       const response = await axios.get('/api/movies/scrape', {
         params: {
-          names: folderString
+          names: folderString,
+          ...(primary_release_year && { primary_release_year }),
+          ...(language && { language })
         },
         timeout: 60000
       });
       console.log("reponse:", response);
-      console.log("folder's names sent to backend:", folders);
+      console.log("folder's names sent to backend:", names);
       fetchMovies();
     } catch (error) {
       console.error("error when sending folders' names:", error);

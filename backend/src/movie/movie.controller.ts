@@ -7,10 +7,14 @@ export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Get('scrape')
-  async scrapeMovie(@Query('names') names: string): Promise<string> {
+  async scrapeMovie(
+    @Query('names') names: string,
+    @Query('primary_release_year') primaryReleaseYear?: string,
+    @Query('language') language?: string
+  ): Promise<string> {
     const nameArray = names.split(',,');
     for (const name of nameArray) {
-      await this.movieService.scrapeMovieData(name);
+      await this.movieService.scrapeMovieData(name, primaryReleaseYear, language);
       await new Promise(resolve => setTimeout(resolve, 100));
     }
     return `Movie data for [${nameArray.join(', ')}] has been scraped and stored.`;
