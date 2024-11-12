@@ -8,25 +8,8 @@ import axios from 'axios';
 
 const App = () => {
   const [movies, setMovies] = useState<Movie[]>([
-    {
-      id: 1,
-      title: 'Inception',
-      release_date: '2010',
-      poster_path: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?auto=format&fit=crop&q=80&w=500',
-      overview: 'A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.',
-      vote_average: 8.8
-    },
-    {
-      id: 2,
-      title: 'The Dark Knight',
-      release_date: '2008',
-      poster_path: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&q=80&w=500',
-      overview: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.',
-      vote_average: 9.0
-    }
-  ]);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  ]);
 
   const [filteredMovies, setFilteredMovies] = useState<Movie[]>(movies);
 
@@ -59,9 +42,23 @@ const App = () => {
     console.log(filteredMovies);
   }
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    // In a real app, this would trigger an API call to search movies
+  const handleSearch = async (query: string) => {
+    try {
+      const response = await axios.get('/api/movies/scrape_single', {
+        params: {
+          name: query
+        },
+        timeout: 1000
+      });
+      console.log("reponse:", response);
+      console.log("success searching movie:", query);
+      console.log(movies);
+      const res = await fetchMovies();
+      console.log(res);
+      await fetchMovies();
+    } catch (error) {
+      console.error("error when searching movie:", query);
+    }
   };
 
   const handleScrape = async (folders: string[]) => {    
@@ -87,14 +84,18 @@ const App = () => {
       const response = await axios.get('/api/movies/getinfo');
       setMovies(response.data);
       setFilteredMovies(response.data);
+      return response.data;
     } catch (error) {
       console.error('Error fetching movies:', error);
+      return [];
+    } finally {
+      // 把callback放在finally块中，可以确保在try-catch执行后，无论是否发生异常都调用callback
     }
   };
 
   return (
     <div className="flex h-screen bg-gray-900 text-white">
-      <Sidebar />
+      <Sidebar onRefresh={fetchMovies}/>
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header onSearch={handleSearch} onScrape={handleScrape} onFilter={handleFilter}/>
         <main className="flex-1 overflow-y-auto p-6">
