@@ -1,11 +1,12 @@
 import React from 'react';
-import { Film, RefreshCcw } from 'lucide-react';
+import { Film, RefreshCcw, Trash } from 'lucide-react';
 
 interface SidebarProps {
   onRefresh: () => void;
+  onDelete: () => void;
 }
 
-const Sidebar = ({ onRefresh }: SidebarProps) => {
+const Sidebar = ({ onRefresh, onDelete }: SidebarProps) => {
   return (
     <aside className="w-16 bg-gray-800 border-r border-gray-700 flex flex-col items-center py-4">
       <div className="mb-8">
@@ -17,6 +18,12 @@ const Sidebar = ({ onRefresh }: SidebarProps) => {
           onClick={onRefresh}
         >
           <RefreshCcw className="w-6 h-6" />
+        </button>
+        <button 
+          className="w-12 h-12 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg mb-2"
+          onClick={onDelete}
+        >
+          <Trash className="w-6 h-6 text-red-500" />
         </button>
       </nav>
     </aside>

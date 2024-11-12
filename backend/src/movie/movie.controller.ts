@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, Delete } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { Movie } from './movie.entity';
 
@@ -23,6 +23,17 @@ export class MovieController {
     } catch (error) {
       console.error('Error fetching movie_db:', error);
       return [];
+    }
+  }
+
+  @Delete('deleteAll')
+  async deleteAllMovies(): Promise<string> {
+    try {
+      await this.movieService.deleteAllMovies();
+      return 'All movie data has been deleted.';
+    } catch (error) {
+      console.error('Error deleting movie data:', error);
+      return 'Failed to delete movie data.';
     }
   }
 }
