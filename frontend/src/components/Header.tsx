@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { Search, Upload } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { Search, Filter } from 'lucide-react';
 
 interface HeaderProps {
   onSearch: (query: string) => void;
@@ -8,6 +8,12 @@ interface HeaderProps {
 }
 
 const Header = ({ onSearch, onScrape, onFilter }: HeaderProps) => {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchButton = () => {
+    onSearch(searchQuery);
+  }
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 点击按钮时触发文件选择框
@@ -18,7 +24,6 @@ const Header = ({ onSearch, onScrape, onFilter }: HeaderProps) => {
   }
 
   // 处理文件夹选择
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files) return;
@@ -34,23 +39,30 @@ const Header = ({ onSearch, onScrape, onFilter }: HeaderProps) => {
 
     onScrape(Array.from(folderSet));
   };
+
   return (
     <header className="bg-gray-800 border-b border-gray-700 p-4">
       <div className="flex items-center justify-between gap-6">
         <div className="flex-1 max-w-2xl">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <Search
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+              size={20} 
+              onClick={handleSearchButton} 
+            />
             <input
               type="text"
               placeholder="Search movies..."
               className="w-full pl-10 pr-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
-              onChange={(e) => onSearch(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearchButton()}
             />
           </div>
         </div>
         <div className="flex-1 max-w-2xl">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
               type="text"
               placeholder="Filter movies..."
