@@ -43,23 +43,8 @@ const App = () => {
   }
 
   const handleSearch = async (query: string) => {
-    try {
-      const response = await axios.get('/api/movies/scrape_single', {
-        params: {
-          name: query
-        },
-        timeout: 1000
-      });
-      console.log("reponse:", response);
-      console.log("success searching movie:", query);
-      console.log(movies);
-      const res = await fetchMovies();
-      console.log(res);
-      await fetchMovies();
-    } catch (error) {
-      console.error("error when searching movie:", query);
-    }
-  };
+    handleScrape([query]);
+  }
 
   const handleScrape = async (folders: string[]) => {    
     try {
