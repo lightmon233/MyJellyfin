@@ -28,6 +28,20 @@ const App = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
 
+  const handleFilter = (query: string) => {
+    query = query.trim()
+    if (query === '') {
+      setMovies(movies); // 如果查询为空，重置为完整列表
+    } else {
+      const moviesCopy = structuredClone(movies);
+      const filtered = moviesCopy.filter(movie =>
+        movie.title.toLowerCase().includes(query.toLowerCase())
+      );
+      setMovies(filtered);
+    }
+    console.log(movies);
+  }
+
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     // In a real app, this would trigger an API call to search movies
@@ -64,7 +78,7 @@ const App = () => {
     <div className="flex h-screen bg-gray-900 text-white">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header onSearch={handleSearch} onScrape={handleScrape}/>
+        <Header onSearch={handleSearch} onScrape={handleScrape} onFilter={handleFilter}/>
         <main className="flex-1 overflow-y-auto p-6">
           <MovieGrid movies={movies} />
         </main>
