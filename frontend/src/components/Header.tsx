@@ -36,7 +36,7 @@ const Header = ({ onSearch, onScrape, onFilter }: HeaderProps) => {
   };
   return (
     <header className="bg-gray-800 border-b border-gray-700 p-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-6">
         <div className="flex-1 max-w-2xl">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -49,15 +49,15 @@ const Header = ({ onSearch, onScrape, onFilter }: HeaderProps) => {
           </div>
         </div>
         <div className="flex-1 max-w-2xl">
-            <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-                <input
-                  type="text"
-                  placeholder="Filter movies..."
-                  className="w-full pl-10 pr-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
-                  onChange={(e) => onFilter(e.target.value)}
-                />
-            </div>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              placeholder="Filter movies..."
+              className="w-full pl-10 pr-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
+              onChange={(e) => onFilter(e.target.value)}
+            />
+          </div>
         </div>
         <button
           onClick={handleButtonClick}

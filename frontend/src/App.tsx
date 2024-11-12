@@ -42,6 +42,11 @@ const App = () => {
     // 在调用 setFilteredMovies 后，状态不会立即更新，
     // 而是会等到下一个渲染周期才生效。因此，console.log(filteredMovies) 
     // 打印出来的值还是之前的状态，而不是刚刚更新后的值。
+
+    // 总结：如果filter自己后在赋给自己的话就会出问题，问题就是减字符的时候页面会保持不变
+    // 应该是因为这样操作的话，自己就真的被filter了，每次filter都会是自己的集合缩小，
+    // 所以即时再减字符也不能使得集合再变大
+
     if (query.trim() === '') {
       setFilteredMovies(movies);
     } else {
