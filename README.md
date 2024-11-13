@@ -5,7 +5,7 @@ We use [Vite](https://vite.dev) + [React](https://react.dev) for frontend, and [
 
 ## Preview
 
-![预览图](preview.pngjkv
+![预览图](preview.png)
 
 ## How to deploy
 
