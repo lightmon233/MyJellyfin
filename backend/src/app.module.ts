@@ -20,6 +20,7 @@ import { config } from 'dotenv';
         database: configService.get<string>('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true, // 仅开发使用
+        logging: true, // 启用SQL日志
       }),
       inject: [ConfigService],
     }),
