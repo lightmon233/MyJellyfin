@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Film, Search, Upload, Settings2 } from 'lucide-react';
 import MovieGrid from './components/MovieGrid';
 import Sidebar from './components/Sidebar';
@@ -7,9 +7,7 @@ import { Movie } from './types';
 import axios from 'axios';
 
 const App = () => {
-  const [movies, setMovies] = useState<Movie[]>([
-
-  ]);
+  const [movies, setMovies] = useState<Movie[]>([]);
 
   const [filteredMovies, setFilteredMovies] = useState<Movie[]>(movies);
 
@@ -127,6 +125,10 @@ const App = () => {
     }
     fetchMovies();
   }
+
+  useEffect(() => {
+    fetchMovies();
+  }, []); // 空数组作为依赖项，确保只在组件首次挂载时调用一次
 
   return (
     <div className="flex h-screen bg-gray-900 text-white">
