@@ -7,7 +7,7 @@ We use [Vite](https://vite.dev) + [React](https://react.dev) for frontend, and [
 
 ![预览图](preview.png)
 
-## How to deploy
+## How To Deploy
 
 ### 1. Clone this repository using `git clone`
 
@@ -52,7 +52,7 @@ npm run dev
 npm run start:dev
 ```
 
-## Basic usage
+## Basic Usage
 
 #### Search Box
 After entering the movie name you want to search for in the search box, press Enter to search all movies. The most relevant movie will be selected for download.
@@ -68,3 +68,7 @@ Click to retrieve data from the database and refresh the movie list.
 
 #### Trash Icon
 Click to delete all movies from the database and reflect this change in the display.
+
+## Additional Usage
+
+Go to the [Wiki Page](https://github.com/lightmon233/MyJellyfin/wiki) to check out.
