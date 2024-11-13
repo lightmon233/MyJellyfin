@@ -57,7 +57,7 @@ npm run start:dev
 #### Search Box
 After entering the movie name you want to search for in the search box, press Enter to search all movies. The most relevant movie will be selected for download.
 
-Filter Box
+#### Filter Box
 After entering text in the search box, the movies will be filtered based on matching titles.
 
 #### Scrape Directory
