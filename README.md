@@ -101,18 +101,6 @@ Visit the [Wiki Page](https://github.com/lightmon233/MyJellyfin/wiki) to explore
 
 ---
 
-## 📂 File Structure
-
-```
-MyJellyfin/
-├── frontend/           # React-based frontend code
-├── backend/            # NestJS-based backend code
-├── .env.example        # Example environment variables
-└── preview.png         # Preview screenshot
-```
-
----
-
 ## 🤝 Contributing
 
 We welcome contributions! Feel free to fork this repository, submit issues, or create pull requests.
