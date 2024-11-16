@@ -1,21 +1,38 @@
-# MyJellyfin
-A minimal MIS system built to mimic Jellyfin's movie scraping features.
+# 🍿 MyJellyfin
 
-We use [Vite](https://vite.dev) + [React](https://react.dev) for frontend, and [NestJS](https://nestjs.com) for backend.
+![GitHub Repo stars](https://img.shields.io/github/stars/lightmon233/MyJellyfin?style=social)
+![GitHub issues](https://img.shields.io/github/issues/lightmon233/MyJellyfin)
+![GitHub license](https://img.shields.io/github/license/lightmon233/MyJellyfin)
 
-## Preview
+**A minimal MIS (Movie Information System)** built to mimic **Jellyfin's movie scraping features**.
 
-![预览图](preview.png)
+This project utilizes:
+- **Frontend**: [Vite](https://vite.dev) + [React](https://react.dev)
+- **Backend**: [NestJS](https://nestjs.com)
 
-## How To Deploy
+---
 
-### 1. Clone this repository using `git clone`
+## 📸 Preview
+
+![Preview](preview.png)
+
+Get a glimpse of MyJellyfin in action!
+
+---
+
+## 🚀 How To Deploy
+
+Follow these steps to get started:
+
+### 1️⃣ Clone the repository  
+Use `git clone` to download the source code:
 
 ```bash
 git clone https://github.com/lightmon233/MyJellyfin.git
 ```
 
-### 2. Change directory to frontend and backend to install node.js dependencies
+### 2️⃣ Install dependencies  
+Navigate to the `frontend` and `backend` directories and run:
 
 ```bash
 # /frontend
@@ -27,9 +44,10 @@ npm install
 npm install
 ```
 
-### 3. Create .env file under backend to connect to your database(postgres as ours) and file server(openresty or nginx as ours)
+### 3️⃣ Configure your environment  
+Create a `.env` file under the `backend` directory with the following settings:
 
-```bash
+```env
 DB_HOST=<your_host_here>
 DB_PORT=<your_port_here>
 DB_USERNAME=<your_username_here>
@@ -40,7 +58,8 @@ NGINX_HOST=<your_host_here>
 TMDB_API_KEY=<your_api_key_here>
 ```
 
-### 4. Go to frontend and backend directory to run service
+### 4️⃣ Run the services  
+Start both frontend and backend services:
 
 ```bash
 # /frontend
@@ -52,23 +71,56 @@ npm run dev
 npm run start:dev
 ```
 
-## Basic Usage
+---
 
-#### Search Box
-After entering the movie name you want to search for in the search box, press Enter to search all movies. The most relevant movie will be selected for download.
+## 🛠️ Basic Usage
 
-#### Filter Box
-After entering text in the search box, the movies will be filtered based on matching titles.
+Here are the core features of **MyJellyfin**:
 
-#### Scrape Directory
-Clicking this will prompt you to select a local directory. All first-level subfolders in the selected directory will be uploaded for scraping. Please note that each first-level subfolder must contain files to be uploaded.
+### 🔍 Search Box  
+Enter the movie name in the search box and press Enter to search. The most relevant movie will be selected for download.
 
-#### Refresh Button
-Click to retrieve data from the database and refresh the movie list.
+### 🎛️ Filter Box  
+Type text into the filter box to narrow down the displayed movies by matching titles.
 
-#### Trash Icon
-Click to delete all movies from the database and reflect this change in the display.
+### 📁 Scrape Directory  
+Click to select a local directory. All first-level subfolders will be uploaded for scraping.  
+**Note**: Ensure each subfolder contains files to be uploaded.
 
-## Additional Usage
+### 🔄 Refresh Button  
+Click to reload movie data from the database and refresh the displayed list.
 
-Go to the [Wiki Page](https://github.com/lightmon233/MyJellyfin/wiki) to check out.
+### 🗑️ Trash Icon  
+Delete all movies from the database with a single click. This will update the display accordingly.
+
+---
+
+## 📚 Additional Features
+
+Visit the [Wiki Page](https://github.com/lightmon233/MyJellyfin/wiki) to explore advanced functionality and learn more about this project.
+
+---
+
+## 📂 File Structure
+
+```
+MyJellyfin/
+├── frontend/           # React-based frontend code
+├── backend/            # NestJS-based backend code
+├── .env.example        # Example environment variables
+└── preview.png         # Preview screenshot
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Feel free to fork this repository, submit issues, or create pull requests.
+
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).  
+Enjoy building your own movie scraping system with **MyJellyfin**! 🌟
+
