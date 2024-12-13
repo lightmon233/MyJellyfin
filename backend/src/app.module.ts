@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MovieModule } from './movie/movie.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
+import { PythonExecutorModule } from './python/python-executor.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { config } from 'dotenv';
       inject: [ConfigService],
     }),
     MovieModule,
+    PythonExecutorModule
   ],
 })
 export class AppModule {}
