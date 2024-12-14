@@ -78,7 +78,7 @@ export class MovieService {
         if (poster_path) {
           const imageName = poster_path.substring(1);
 
-          const posterUrl = `https://image.tmdb.org/t/p/original${poster_path}`;
+          const posterUrl = `https://image.tmdb.org/t/p/w500/${poster_path}`;
           const imageResponse = await axios.get(posterUrl, { responseType: 'arraybuffer' });
 
           const tempImagePath = path.join(__dirname, '../../.tmp', imageName);

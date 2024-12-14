@@ -4,6 +4,8 @@ from sklearn.neighbors import NearestNeighbors
 import json
 import sys
 
+sys.stdout.reconfigure(encoding='utf-8')
+
 def find_similar_movies_by_id(movie_id, csv_path="Movies_Dataset.csv", top_n=5):
     """
     Find similar movies based on the overview content of a given movie.
@@ -67,7 +69,7 @@ def find_similar_movies_by_id(movie_id, csv_path="Movies_Dataset.csv", top_n=5):
     similar_indices = indices[0][2:]
 
     # Prepare the recommendations
-    recommendations = temp_movies_df.iloc[similar_indices][['id', 'title']].to_dict(orient='records')
+    recommendations = temp_movies_df.iloc[similar_indices][['id', 'title', 'release_date', 'poster_path', 'overview', 'vote_average']].to_dict(orient='records')
 
     # Return a structured response
     return {

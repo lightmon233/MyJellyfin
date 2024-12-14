@@ -12,7 +12,13 @@ export class PythonExecutorService {
       if (stderr) {
         throw new Error(`Error: ${stderr}`);
       }
-      return stdout;
+      const result = JSON.parse(stdout);
+      result.recommendations.forEach((recommendation: any) => {
+        if (recommendation.poster_path) {
+          recommendation.poster_path = `https://image.tmdb.org/t/p/w500${recommendation.poster_path}`;
+        }
+      });
+      return JSON.stringify(result, null, 4);
     } catch (error) {
       throw new Error(`Failed to run Python script: ${error.message}`);
     }
