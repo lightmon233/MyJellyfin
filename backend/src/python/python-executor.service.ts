@@ -6,9 +6,9 @@ const execPromise = promisify(exec);
 
 @Injectable()
 export class PythonExecutorService {
-  async runPythonScript(scriptPath: string): Promise<string> {
+  async runPythonScript(scriptPath: string, args: string): Promise<string> {
     try {
-      const { stdout, stderr } = await execPromise(`python ${scriptPath}`);
+      const { stdout, stderr } = await execPromise(`python ${scriptPath} ${args}`);
       if (stderr) {
         throw new Error(`Error: ${stderr}`);
       }
