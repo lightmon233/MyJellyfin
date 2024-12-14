@@ -13,6 +13,10 @@ export class PythonExecutorService {
         throw new Error(`Error: ${stderr}`);
       }
       const result = JSON.parse(stdout);
+      if (!Array.isArray(result.recommendations)) {
+        console.error('data is not an array:');
+        return;
+      }
       result.recommendations.forEach((recommendation: any) => {
         if (recommendation.poster_path) {
           recommendation.poster_path = `https://image.tmdb.org/t/p/w500${recommendation.poster_path}`;

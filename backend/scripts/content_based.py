@@ -82,6 +82,16 @@ def find_similar_movies_by_id(movie_id, csv_path="Movies_Dataset.csv", top_n=5):
         "recommendations": recommendations
     }
 
+def clean_json(obj):
+    if isinstance(obj, dict):
+        return {k: clean_json(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [clean_json(i) for i in obj]
+    elif obj is None or obj != obj:
+        return None
+    else:
+        return obj
+
 # Example usage
 if __name__ == "__main__":
     # Parse arguments from command line
@@ -94,6 +104,7 @@ if __name__ == "__main__":
 
     # Get recommendations
     result = find_similar_movies_by_id(input_movie_id, csv_path=csv_file_path, top_n=5)
+    result = clean_json(result)
 
     # Output result as JSON
     print(json.dumps(result, ensure_ascii=False, indent=4))
