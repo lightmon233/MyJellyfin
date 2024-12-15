@@ -8,10 +8,12 @@ const execPromise = promisify(exec);
 export class PythonExecutorService {
   async runPythonScript(scriptPath: string, args: string): Promise<string> {
     try {
+      console.log(args);
       const { stdout, stderr } = await execPromise(`python ${scriptPath} ${args}`);
       if (stderr) {
         throw new Error(`Error: ${stderr}`);
       }
+      console.log(stdout);
       const result = JSON.parse(stdout);
       if (!Array.isArray(result.recommendations)) {
         console.error('data is not an array:');

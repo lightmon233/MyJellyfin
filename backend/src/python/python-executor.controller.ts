@@ -6,8 +6,7 @@ export class PythonController {
   constructor(private readonly pythonExecutorService: PythonExecutorService) {}
 
   @Get('run')
-  async runPythonScript(@Query('args') args: string): Promise<string> {
-    const scriptPath = 'scripts/content_based.py';
-    return this.pythonExecutorService.runPythonScript(scriptPath, args);
+  async runPythonScript(@Query('path') path: string, @Query('args') args: string): Promise<string> {
+    return this.pythonExecutorService.runPythonScript(path, args);
   }
 }
