@@ -4,6 +4,7 @@ import { MovieModule } from './movie/movie.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 import { PythonExecutorModule } from './python/python-executor.module';
+import { ShowModule } from './show/show.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { PythonExecutorModule } from './python/python-executor.module';
       inject: [ConfigService],
     }),
     MovieModule,
-    PythonExecutorModule
+    PythonExecutorModule,
+    ShowModule
   ],
 })
 export class AppModule {}
