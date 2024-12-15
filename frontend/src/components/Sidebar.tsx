@@ -1,5 +1,5 @@
 import React from 'react';
-import { Film, Home, Compass } from 'lucide-react';
+import { Film, Home, Compass, Tv } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -17,7 +17,15 @@ const Sidebar = () => {
             location.pathname === '/' ? 'text-white bg-gray-700' : 'text-gray-400 hover:text-white hover:bg-gray-700'
           }`}
         >
-          <Home className="w-6 h-6" />
+          <Film className="w-6 h-6" />
+        </Link>
+        <Link
+          to="/shows"
+          className={`w-12 h-12 flex items-center justify-center rounded-lg ${
+            location.pathname === '/shows' ? 'text-white bg-gray-700' : 'text-gray-400 hover:text-white hover:bg-gray-700'
+          }`}
+        >
+          <Tv className="w-6 h-6" />
         </Link>
         <Link
           to="/explore"

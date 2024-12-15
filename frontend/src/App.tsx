@@ -1,8 +1,9 @@
 import Sidebar from './components/Sidebar';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
+import Movies from './pages/Movies';
 import Explore from './pages/Explore';
+import Shows from './pages/Shows';
 
 const App = () => {
   // const handleDelete = async () => {
@@ -20,7 +21,8 @@ const App = () => {
       <Sidebar />
       <div className="flex">
         <Routes>
-          <Route path="/" element={<Home />}></Route>
+          <Route path="/" element={<Movies />}></Route>
+          <Route path="/shows" element={<Shows />}></Route>
           <Route path="/explore" element={<Explore />}></Route>
         </Routes>
       </div>

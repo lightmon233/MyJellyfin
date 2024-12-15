@@ -2,21 +2,21 @@ import MovieGrid from '../components/MovieGrid';
 import Header from '../components/Header';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Movie } from '../types';
+import { Show } from '../types';
 
-const Home = () => {
-	const [movies, setMovies] = useState<Movie[]>([]);
-	const [filteredMovies, setFilteredMovies] = useState<Movie[]>(movies);
+const Shows = () => {
+	const [shows, setShows] = useState<Show[]>([]);
+	const [filteredShows, setFilteredShows] = useState<Show[]>(shows);
 
 	const handleSearch = async (query: string) => {
-    const params: { names: string[]; primary_release_year?: string; language?: string } = {
+    const params: { names: string[]; first_air_date_year?: string; language?: string } = {
       names: [query],
     };
 
     // 使用正则表达式解析 `primary_release_year`
     const yearMatch = query.match(/y:(\d{4})/);
     if (yearMatch) {
-      params.primary_release_year = yearMatch[1];
+      params.first_air_date_year = yearMatch[1];
       params.names = [params.names[0].replace(yearMatch[0], '').trim()]; // 从查询中移除 `y:2015`
     }
 
@@ -31,10 +31,10 @@ const Home = () => {
   }
 
 	const handleScrape = async ({
-    names, primary_release_year, language
+    names, first_air_date_year, language
   }: {
     names: string[];
-    primary_release_year?: string;
+    first_air_date_year?: string;
     language?: string;
   }) => {    
     try {
@@ -54,17 +54,17 @@ const Home = () => {
       //   params.language = language;
       // }
 
-      const response = await axios.get('/api/movies/scrape', {
+      const response = await axios.get('/api/shows/scrape', {
         params: {
           names: folderString,
-          ...(primary_release_year && { primary_release_year }),
+          ...(first_air_date_year && { first_air_date_year }),
           ...(language && { language })
         },
         timeout: 60000
       });
       console.log("reponse:", response);
       console.log("folder's names sent to backend:", names);
-      fetchMovies();
+      fetchShows();
     } catch (error) {
       console.error("error when sending folders' names:", error);
     }
@@ -88,25 +88,25 @@ const Home = () => {
     // 所以即时再减字符也不能使得集合再变大
 
     if (query.trim() === '') {
-      setFilteredMovies(movies);
+      setFilteredShows(shows);
     } else {
-      const filtered = movies.filter(movie =>
-        movie.title.toLowerCase().includes(query.toLowerCase())
+      const filtered = shows.filter(show =>
+        show.name.toLowerCase().includes(query.toLowerCase())
       );
-      setFilteredMovies(filtered);
+      setFilteredShows(filtered);
     }
-    console.log(movies);
-    console.log(filteredMovies);
+    console.log(shows);
+    console.log(filteredShows);
   }
 
-	const fetchMovies = async () => {
+	const fetchShows = async () => {
     try {
-      const response = await axios.get('/api/movies/getinfo');
-      setMovies(response.data);
-      setFilteredMovies(response.data);
+      const response = await axios.get('/api/shows/getinfo');
+      setShows(response.data);
+      setFilteredShows(response.data);
       return response.data;
     } catch (error) {
-      console.error('Error fetching movies:', error);
+      console.error('Error fetching shows:', error);
       return [];
     } finally {
       // 把callback放在finally块中，可以确保在try-catch执行后，无论是否发生异常都调用callback
@@ -114,17 +114,17 @@ const Home = () => {
   };
 
 	useEffect(() => {
-		fetchMovies();
+		fetchShows();
 	}, [])
 
 	return (
 		<div className="flex-1 flex flex-col overflow-hidden">
-			<Header onSearch={handleSearch} onScrape={handleScrape} onFilter={handleFilter} />
+			<Header onSearch={handleSearch} onScrape={handleScrape} onFilter={handleFilter} page="shows"/>
 			<main className="flex-1 overflow-y-auto p-6">
-				<MovieGrid movies={filteredMovies} />
+				<MovieGrid movies={filteredShows} />
 			</main>
 		</div>
 	);
 }
 
-export default Home;
+export default Shows;
