@@ -1,8 +1,19 @@
 const getBangumiSubjectId = async (animeName: string) => {
   const apiUrl = `https://api.bgm.tv/search/subject/${encodeURIComponent(animeName)}?type=2&limit=1`;
 
+	const token = import.meta.env.VITE_BANGUMI_TOKEN;
+
 	try {
-		const response = await fetch(apiUrl);
+		const response = await fetch(apiUrl, {
+			method: 'GET',
+			headers: {
+				// 这个token使用用于用户验证不是api访问
+				// 'Authorization': `Bearer ${token}`,
+				'User-Agent': 'lightmon/myjellyfin',
+				// 注释掉因为报错说content-type not allowed
+				// 'Content-Type': 'application/json'
+			}
+		});
 		if (!response.ok) {
 			throw new Error(`Http error! Status: ${response.status}`);
 		}
@@ -21,8 +32,17 @@ const getBangumiSubjectId = async (animeName: string) => {
 async function getAnimeNameBySubjectId(subjectId: string) {
 	const apiUrl = `https://api.bgm.tv/v0/subjects/${subjectId}`;
 
+	const token = import.meta.env.VITE_BANGUMI_TOKEN;
+
 	try {
-			const response = await fetch(apiUrl);
+			const response = await fetch(apiUrl, {
+				method: 'GET',
+				headers: {
+					// 'Authorization': `Bearer ${token}`,
+					'User-Agent': 'lightmon/myjellyfin',
+					// 'Content-Type': 'application/json'
+				}
+			});
 			if (!response.ok) {
 					throw new Error(`HTTP error! Status: ${response.status}`);
 			}
