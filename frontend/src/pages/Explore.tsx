@@ -2,6 +2,7 @@ import React, { useEffect, useState }from 'react';
 import { Movie, Show } from '../types';
 import axios from 'axios';
 import MovieGrid from '../components/MovieGrid';
+import { getBangumiSubjectId, getAnimeNameBySubjectId } from '../utils/bangumi';
 
 const Explore = () => {
 	const [movies, setMovies] = useState<Movie[]>([]);
@@ -21,6 +22,7 @@ const Explore = () => {
 				}
 			});
 			const recommendations = response.data.recommendations;
+			console.log(recommendations);
 			setMovies(recommendations);
 			const title = scraped_movies.data[index].title;
 			setTitle(title);
@@ -33,7 +35,12 @@ const Explore = () => {
 	const fetchRecommenededShows = async () => {
 		try {
 			const scraped_shows = await axios.get('/api/shows/getinfo');
-			const titles = scraped_shows.data.map((item: Show) => item.original_name);
+			const titles = await Promise.all(
+				scraped_shows.data.map(async (item: Show) => {
+					return await getBangumiSubjectId(item.original_name);
+				})
+			);			
+			console.log("titles:", titles)
 			const response = await axios.get('/api/python/run', {
 				params: {
 					path: "scripts/user_based.py",
@@ -43,7 +50,26 @@ const Explore = () => {
 					args: `"${JSON.stringify(titles).replace(/"/g, '\\"')}"`
 				}
 			});
-			console.log(response);
+			let recommendations = response.data.recommendations;
+			recommendations = await Promise.all(
+				recommendations.map(async (item: string) => {
+					return await getAnimeNameBySubjectId(item)
+				})
+			);
+			console.log(recommendations);
+			recommendations = await Promise.all(
+				recommendations.map(async (item: string) => {
+					await new Promise(resolve => setTimeout(resolve, 100));
+					const response = await axios.get('api/shows/search', {
+						params: {
+							names: item,
+						}
+					});
+					return response.data;
+				})
+			);
+			const filteredRecommendations = recommendations.filter((item: any) => item);
+			setShows(filteredRecommendations);
 		} catch (error) {
 			console.error('Error fetching shows:', error);
 		}
@@ -55,15 +81,27 @@ const Explore = () => {
 	}, []);
 
 	return (
-		<div className="flex-1 flex flex-col overflow-hidden">
-			<div className="bg-gray-800 border-b border-gray-700 p-4">
-				<h1 className="text-2xl font-semibold text-white text-center">
-					{`Because you've scrapped ${title}:`}
-				</h1>
+		<div className="flex">
+			<div className="flex-1 flex flex-col overflow-hidden">
+				<div className="bg-gray-800 border-b border-gray-700 p-4">
+					<h1 className="text-2xl font-semibold text-white text-center">
+						{`Because you've scrapped ${title}:`}
+					</h1>
+				</div>
+				<main className="flex-1 overflow-y-auto p-6">
+					<MovieGrid movies={movies} />
+				</main>
 			</div>
-			<main className="flex-1 overflow-y-auto p-6">
-				<MovieGrid movies={movies} />
-			</main>
+			<div className="flex-1 flex flex-col overflow-hidden">
+				<div className="bg-gray-800 border-b border-gray-700 p-4">
+					<h1 className="text-2xl font-semibold text-white text-center">
+						{`Liked by users like you:`}
+					</h1>
+				</div>
+				<main className="flex-1 overflow-y-auto p-6">
+					<MovieGrid movies={shows} />
+				</main>
+			</div>
 		</div>
 	);
 }

@@ -20,6 +20,15 @@ export class ShowController {
     return `Show data for [${nameArray.join(', ')}] has been scraped and stored.`;
   }
 
+  @Get('search')
+  async searchShow(
+    @Query('names') names: string,
+    @Query('first_air_date_year') firstAirDateYear?: string,
+    @Query('language') language?: string
+  ): Promise<string> {
+      return await this.showService.searchShowData(names, firstAirDateYear, language);
+  }
+
   @Get('getinfo')
   async getShowsInfo(): Promise<Show[]> {
     try {

@@ -102,6 +102,7 @@ const Shows = () => {
 	const fetchShows = async () => {
     try {
       const response = await axios.get('/api/shows/getinfo');
+      console.log("shows:", response.data);
       setShows(response.data);
       setFilteredShows(response.data);
       return response.data;

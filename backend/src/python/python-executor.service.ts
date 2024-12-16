@@ -8,7 +8,7 @@ const execPromise = promisify(exec);
 export class PythonExecutorService {
   async runPythonScript(scriptPath: string, args: string): Promise<string> {
     try {
-      console.log(args);
+      // console.log(args);
       const { stdout, stderr } = await execPromise(`python ${scriptPath} ${args}`);
       if (stderr) {
         throw new Error(`Error: ${stderr}`);

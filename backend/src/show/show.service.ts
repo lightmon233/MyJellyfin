@@ -42,6 +42,47 @@ export class ShowService {
     }
   }
 
+  async searchShowData(
+    localShowName: string,
+    firstAirDateYear?: string,
+    language?: string
+  ): Promise<string> {
+    try {
+      const params: {
+        api_key: string,
+        query: string,
+        first_air_date_year?: string,
+        language?: string
+      } = { api_key: this.apiKey, query: localShowName };
+
+      if (firstAirDateYear) {
+        params.first_air_date_year = firstAirDateYear;
+      }
+      if (language) {
+        params.language = language;
+      }
+
+      const response = await axios.get(
+        `${this.tmdbBaseUrl}/search/tv`,
+        {
+          params
+        }
+      );
+
+      console.log(response.data);
+      
+      const showData = response.data.results[0];
+
+      let { id, name, first_air_date, poster_path, overview, vote_average, original_name } = showData;
+
+      poster_path = `https://image.tmdb.org/t/p/w500/${poster_path}`;
+
+      return JSON.stringify({id, name, first_air_date, poster_path, overview, vote_average, original_name});
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async scrapeShowData(
     localShowName: string,
     firstAirDateYear?: string,

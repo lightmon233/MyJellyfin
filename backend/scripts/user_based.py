@@ -52,7 +52,8 @@ def find_similar_movies(current_user, scraped_movies):
             index='user_id', 
             columns='subject_id', 
             values='rating', 
-            fill_value=0
+            fill_value=0,
+            observed=False
         )
         
         # 转换为稀疏矩阵
@@ -87,7 +88,7 @@ def find_similar_movies(current_user, scraped_movies):
             similar_users_ratings[
                 ~similar_users_ratings['subject_id'].isin(scraped_movies)
             ]
-            .groupby('subject_id')['rating']
+            .groupby('subject_id', observed=False)['rating']
             .mean()
             .nlargest(5)
         )
@@ -103,4 +104,4 @@ def find_similar_movies(current_user, scraped_movies):
 
 if __name__ == '__main__':
     args = json.loads(sys.argv[1])
-    print(json.dumps(find_similar_movies("abcdefg", args)))
+    print(json.dumps(find_similar_movies("current_user", args)))
